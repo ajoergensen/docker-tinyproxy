@@ -1,16 +1,22 @@
 sudo: required
+language: python
 before_install:
+- export TAG=`if [ "$TRAVIS_BRANCH" == "master" ]; then echo "latest"; else echo $TRAVIS_BRANCH ; fi`
 - curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
 - sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
 - sudo apt-get update
 - sudo apt-get -y install docker-ce
-script:
-- export TAG=`if [ "$TRAVIS_BRANCH" == "master" ]; then echo "latest"; else echo $TRAVIS_BRANCH
-  ; fi`
 - docker build -t $REPO:$TAG .
+- docker run --name tinyproxy -d $REPO:$TAG 
+- docker ps -a
+script:
+- docker exec -tinyproxy pgrep tinyproxy
+after_script:
+- docker rm -f tinyproxy
 after_success:
-- if [ "$TRAVIS_BRANCH" == "master" ]; then docker login -e $DOCKER_HUB_EMAIL -u $DOCKER_HUB_USER
-  -p $DOCKER_HUB_PASSWORD"; docker push $REPO fi
+- docker login -e $DOCKER_HUB_EMAIL -u $DOCKER_HUB_USER -p $DOCKER_HUB_PASSWORD"
+- docker tag $REPO:$TAG $REPO:$TRAVIS_BUILD_NUMBER
+- docker push $REPO
 env:
   global:
   - secure: t4n8tpdM4tk9HXDacTVNJliNZh8idTv1CJKvXZE978TynAhzuN5iIFt/ipckBBfRdxrmD1XBRclC/hzmSBnTn6l2L4XBrXHqbC0SZkSkldKu0dFR7H/6FXWsgdnrZvWvJOXhsbRDuIlrMbWa4+sFxOnijq4gUaB3qICh+7Y6j3VW0MH1HHxEfowuutd0SRf6aM8aVLN8qutWKMxigrsN0RIGBJaNB7klnk4acRAU/LQO20XRgp7OSFqt666joY7CODxdSk1mX/S1OiEa4s9XvWnZgmQmAiI4C1tF3+GF+3rLtYsaq0vTF5gMaVzpnzYUCGuViGTI+nTL45wGiehRNxXOCT07wMNMjawqWE3Ut1o3q0TSj/Ob+MoCR3ZRKK6GiofPZdqBfEeyf63fBA133d4N8LmIKeix4jdBeN1/Q5L/1R9AHetjd4Bo7ZXigkh602jQ8JSGATO9kZ3vDyaPoiTUna7LPEIxThqgx1zTve8zCZAXApVFIZgNmN8QwC/X50imMZRTjSOoF4cG268YExSl7aXoRg4dG9BZqEdnTQbmJv65yBGWAGeYb5XnYaP17gaWpiHZFmlINI0coP7gPDZeuBHg0BHB77lsJ7iNhTk4NbvStNc60ExqpGvYFQnSHZ+iw1ab3zp2c8NbsyPL4YFZPlqgUNVy7UO9shkFrws=
