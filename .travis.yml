@@ -1,16 +1,18 @@
 sudo: required
-language: python
+services:
+  - docker
 before_install:
-- export TAG=`if [ "$TRAVIS_BRANCH" == "master" ]; then echo "latest"; else echo $TRAVIS_BRANCH ; fi`
 - curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
 - sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
 - sudo apt-get update
 - sudo apt-get -y install docker-ce
+script:
+- export TAG=`if [ "$TRAVIS_BRANCH" == "master" ]; then echo "latest"; else echo $TRAVIS_BRANCH ; fi`
+- echo $REPO:$TAG
 - docker build -t $REPO:$TAG .
 - docker run --name tinyproxy -d $REPO:$TAG 
 - docker ps -a
-script:
-- docker exec -tinyproxy pgrep tinyproxy
+- docker exec tinyproxy pgrep tinyproxy
 after_script:
 - docker rm -f tinyproxy
 after_success:
