@@ -12,6 +12,8 @@ script:
 - docker build -t $REPO:$TAG .
 - docker run --name tinyproxy -d $REPO:$TAG 
 - docker ps -a
+- sleep 5
+- docker logs tinyproxy
 - docker exec tinyproxy pgrep tinyproxy
 after_script:
 - docker rm -f tinyproxy
