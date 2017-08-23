@@ -1,7 +1,7 @@
 Tinyproxy Docker image
 ======================
 
-[![Build Status](https://travis-ci.org/ajoergensen/docker-tinyproxy.svg?branch=master)](https://travis-ci.org/ajoergensen/docker-tinyproxy)
+[![](https://images.microbadger.com/badges/image/ajoergensen/tinyproxy.svg)](https://microbadger.com/images/ajoergensen/tinyproxy "Get your own image badge on microbadger.com") [![Build Status](https://travis-ci.org/ajoergensen/docker-tinyproxy.svg?branch=master)](https://travis-ci.org/ajoergensen/docker-tinyproxy)
 
 > Tinyproxy is a light-weight HTTP/HTTPS proxy daemon for POSIX operating systems. Designed from the ground up to be fast and yet small, it is an ideal solution for use cases such as embedded deployments where a full featured HTTP proxy is required, but the system resources for a larger proxy are unavailable
 
