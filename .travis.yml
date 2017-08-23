@@ -5,6 +5,7 @@ before_install:
 - sudo apt-get update
 - sudo apt-get -y install docker-ce
 script:
+- export TAG=`if [ "$TRAVIS_BRANCH" == "master" ]; then echo "latest"; else echo $TRAVIS_BRANCH ; fi`
 - echo $REPO:$TAG
 - docker build -t $REPO:$TAG .
 - docker run --name $IMAGE -d $REPO:$TAG 
