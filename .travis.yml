@@ -18,7 +18,7 @@ after_script:
 env:
   global:
   - IMAGE=tinyproxy
-  - REPO=$DOCKER_HUB_USERNAME/$IMAGE
+  - REPO=ajoergensen/$IMAGE
 notifications:
   pushover:
     api_key:
