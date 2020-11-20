@@ -1,0 +1,33 @@
+image: docker:git
+
+variables:
+  DOCKER_DRIVER: overlay2
+  DB: docker build --pull --no-cache --force-rm=true
+
+services:
+ - docker:dind
+
+before_script:
+ - docker info
+ - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN $CI_REGISTRY
+
+stages:
+ - build
+
+build-master:
+ stage: build
+ script:
+  - $DB -t $CI_REGISTRY_IMAGE .
+  - git config user.email $GITHUB_EMAIL
+  - git config user.name $GITHUB_USER
+  - git push https://$GITHUB_USER:$GITHUB_TOKEN@github.com/$GITHUB_USER/$CI_PROJECT_NAME.git HEAD:master --force
+ only:
+  - master
+
+build:
+  stage: build
+  script:
+  - $DB -t $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG .
+  - docker push $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG
+  except:
+    - master
