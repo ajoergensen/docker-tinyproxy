@@ -23,16 +23,16 @@ LogLevel $LOG_LEVEL
 PidFile "/tmp/tinyproxy.pid"
 XTinyproxy Yes
 MaxClients $MAXCLIENTS
-MinSpareServers $MINSPARESERVERS
-MaxSpareServers $MAXSPARESERVERS
-StartServers $STARTSERVERS
 PidFile "/tmp/tinyproxy.pid"
 XTinyproxy Off
 DisableViaHeader On
 EOF
 	# Add current ip
-	echo "# Add current ip" >>$TP_CONF
-	echo "Allow $(ip route get 8.8.8.8 | awk '{print $7}')" >>$TP_CONF
+	printf "\n# ADD current ip(s)\n" >>$TP_CONF
+	for ip in $(ip a | egrep 'inet' | awk '{print $2}'); do
+		echo "Allow $ip" >>$TP_CONF
+	done
+	printf "\n# END current ip(s)\n" >>$TP_CONF
 
 	for a in $ALLOWED; do
 		echo "Allow $a" >>$TP_CONF

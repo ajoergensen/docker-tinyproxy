@@ -1,0 +1,19 @@
+#!/usr/bin/with-contenv bash
+
+TP_CONF="/etc/tinyproxy/tinyproxy.conf"
+
+HASH="$(md5sum $TP_CONF | cut -d' ' -f1)"
+
+while sleep 1; do
+  tmp_hash=$(md5sum $TP_CONF | cut -d' ' -f1)
+  if [[ "$HASH" != "$tmp_hash" ]]; then
+    echo "##########################"
+    echo "Changes detected in config"
+    echo "##########################"
+    HASH="${tmp_hash}"
+    s6-svc -r /var/run/s6/services/tinyproxy
+    echo "##########"
+    echo "Reloadeded"
+    echo "##########"
+  fi
+done
