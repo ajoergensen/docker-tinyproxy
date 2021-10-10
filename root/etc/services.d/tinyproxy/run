@@ -1,4 +1,4 @@
 #!/usr/bin/with-contenv bash
 set -e
 
-exec /usr/bin/tinyproxy -c /etc/tinyproxy/tinyproxy.conf -d 2>&1
+exec s6-setuidgid app /usr/bin/tinyproxy -c /etc/tinyproxy/tinyproxy.conf -d 2>&1
