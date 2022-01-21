@@ -17,8 +17,6 @@ Tinyproxy Docker image
  - `LOG_TO_SYSLOG`: When set to On, this option tells Tinyproxy to write its debug messages to syslog. Defaults to On
  - `LOG_LEVEL`: Sets the log level. Possible values are `Critical` (least verbose), `Error`, `Warning`, `Notice`, `Connect` (log connections without Info's noise), `Info` (most verbose). Defaults to Notice
  - `MAXCLIENTS`: Tinyproxy creates one child process for each connected client. This options specifies the absolute highest number processes that will be created
- - `MINSPARESERVERS` & `MAXSPARESERVERS`: Minimum and maximum number of spare servers to keep running. Defaults to 10 and 20 respectively
- - `STARTSERVERS`: The number of servers to start initially. Defaults to 10.
 
 ### Advanced configuration
 
