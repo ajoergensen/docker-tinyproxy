@@ -9,9 +9,6 @@ TP_CONF="/etc/tinyproxy/tinyproxy.conf"
 : ${LOG_TO_SYSLOG:="Yes"}
 : ${LOG_LEVEL:="Info"}
 : ${MAXCLIENTS:="100"}
-: ${MINSPARESERVERS:="10"}
-: ${MAXSPARESERVERS:="20"}
-: ${STARTSERVERS:="10"}
 
 if [[ ! -f $TP_CONF ]]
  then
@@ -24,9 +21,6 @@ LogLevel $LOG_LEVEL
 PidFile "/tmp/tinyproxy.pid"
 XTinyproxy Yes
 MaxClients $MAXCLIENTS
-MinSpareServers $MINSPARESERVERS
-MaxSpareServers $MAXSPARESERVERS
-StartServers $STARTSERVERS
 PidFile "/tmp/tinyproxy.pid"
 XTinyproxy Off 
 DisableViaHeader On
